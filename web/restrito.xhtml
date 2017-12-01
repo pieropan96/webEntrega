@@ -1,0 +1,45 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./template/template.xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui">
+
+    <ui:define name="left">
+        <h:form>
+            <ul>
+                <li style="list-style: none;"><h:commandLink style="color: white;font-family: arial;" action="index">Voltar</h:commandLink></li>   
+            </ul>
+        </h:form>
+    </ui:define>
+
+    <ui:define name="content">
+        <h:form>
+            <p:panel id="panel" header="ADMINISTRADOR" style="margin-bottom:10px;">
+                <h:panelGrid columns="2" cellpadding="5">
+                    <h:outputLabel  value="Login " />
+                    <p:inputText  value="#{login.email}" required="true" />
+                    <h:outputLabel value="Senha " />
+                    <p:password value="#{login.senha}"></p:password>
+                    <h:column></h:column>
+                    <h:column><h:outputLabel value="#{login.mensagem}" /> </h:column>
+                    <h:commandButton value="LOGAR" class="center_content" action="#{login.logarAdm()}" />
+                </h:panelGrid>
+            </p:panel>
+        </h:form>
+        <h:form>
+            <p:panel id="panel" header="MOTORISTA" style="margin-bottom:10px;">
+                <h:panelGrid columns="2" cellpadding="5">
+                    <h:outputLabel  value="Login " />
+                    <p:inputText  value="#{login.emailM}" required="true" />
+                    <h:outputLabel value="Senha " />
+                    <p:password value="#{login.senhaM}"></p:password>
+                    <h:column></h:column>
+                    <h:column><h:outputLabel value="#{login.mensagemM}" /> </h:column>
+                    <h:commandButton value="LOGAR" class="center_content" action="#{login.logarMotorista()}" />
+                </h:panelGrid>
+            </p:panel>
+        </h:form>
+    </ui:define>
+
+</ui:composition>

@@ -1,0 +1,126 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./template/template.xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:define name="left">
+        <h:form>
+            <ul>
+                <c:if test="#{login.clienteLogado != null}">
+                    <li style="list-style: none;"><h:commandLink style="color: white;font-family: arial;" action="pedido">Novo</h:commandLink></li>
+                </c:if>
+                <li style="list-style: none;"><h:commandLink style="color: white;font-family: arial;" action="home">VOLTAR</h:commandLink></li> 
+            </ul>
+        </h:form>
+    </ui:define>
+
+    <ui:define name="content">
+        <c:if test="#{login.clienteLogado != null}">
+            <p:dataTable var="p" value="#{pedido.listarPedidos()}">
+                <p:column headerText="CLIENTE">
+                    <h:outputText value="#{p.idCliente.nome}" />
+                </p:column>
+                <p:column headerText="PREÇO">
+                    <h:outputText value="#{p.idCidade.preco}" />
+                </p:column>
+                <p:column headerText="PRAZO">
+                    <h:outputText value="#{p.idCidade.prazo}" />
+                </p:column>
+                <p:column headerText="TRANSPORTE">
+                    <h:outputText value="#{p.idTipo.nome}" />
+                </p:column>
+                <p:column headerText="STATUS">
+                    <h:form>
+                        <h:commandLink value="VER MAIS" action="#{pedido.verAtualizacao(p)}"/>
+                    </h:form>
+                </p:column>
+            </p:dataTable> 
+            <c:if test="#{pedido.condicao == true}">
+                <p:panel header="ACOMPANHAR" style="margin-bottom:10px;">
+                    <p:dataTable value="#{pedido.listadetualizacoes}" var="l">
+                        <p:column headerText="Data">
+                            <h:outputText value="#{l.data}" />
+                        </p:column>
+                        <p:column headerText="Hora">
+                            <h:outputText value="#{l.hora}" />
+                        </p:column>
+                        <p:column headerText="Local">
+                            <h:outputText value="#{l.local}" />
+                        </p:column>
+                        <p:column headerText="Status">
+                            <h:outputText value="#{l.status}" />
+                        </p:column>                   
+                    </p:dataTable>
+                    <p:button value="OCULTAR" onclick="#{pedido.condicao = false}"></p:button>
+                </p:panel>
+            </c:if>
+        </c:if>
+        <c:if test="#{login.administradorLogado || login.motoristaLogado != null}">
+            <p:panel header="TODAS ENTREGAS" style="margin-bottom:10px;">
+                <p:dataTable var="p" value="#{pedido.listarPedidosAdm()}">
+                    <p:column headerText="Cliente">
+                        <h:outputText value="#{p.idCliente.nome}" />
+                    </p:column>
+                    <p:column headerText="Preço">
+                        <h:outputText value="#{p.idCidade.preco}" />
+                    </p:column>
+                    <p:column headerText="Prazo">
+                        <h:outputText value="#{p.idCidade.prazo}" />
+                    </p:column>
+                    <p:column headerText="Transporte">
+                        <h:outputText value="#{p.idTipo.nome}" />
+                    </p:column>
+                    <!--<p:column headerText="Endereço">
+                        <h:outputText value="#{p.rua}, #{p.numero}, #{p.bairro}" />
+                    </p:column>--> 
+                    <p:column headerText="Motorista">
+                        <h:outputText rendered="#{p.idMotorista !=null}" value="#{p.idMotorista.nome}" />
+                        <h:form>
+                            <h:commandButton rendered="#{p.idMotorista==null}" value="PEGAR" action="#{pedido.pegar(p)}"/>
+                        </h:form>
+
+                    </p:column>
+                </p:dataTable>   
+            </p:panel>
+        </c:if>
+
+        <c:if test="#{login.motoristaLogado != null}">
+            <p:panel header="MINHAS ENTREGAS" style="margin-bottom:10px;">
+                <p:dataTable value="#{pedido.Minhasentregas()}" var="p">
+                    <p:column headerText="Cliente">
+                        <h:outputText value="#{p.idCliente.nome}" />
+                    </p:column>
+                    <p:column headerText="ENDEREÇO DESTINO">
+                        <h:outputText value="#{p.rua} #{p.numero}, #{p.bairro}" />
+                    </p:column>
+                    <p:column headerText="ATUALIZAR">
+                        <h:form>
+                            <h:panelGrid columns="2" cellpadding="5">
+
+                                <h:outputLabel  value="Local " />
+                                <p:inputText  value="#{pedido.local}" required="true" />
+                                <h:outputLabel  value="Data " />
+                                <p:inputText  value="#{pedido.data}" required="true" />
+                                <h:outputLabel  value="Hora " />
+                                <p:inputText  value="#{pedido.hora}" required="true" />
+                                <h:outputLabel  value="Status" />
+                                <h:selectOneMenu value="#{pedido.status}">
+                                    <f:selectItem itemLabel="Em andamento" itemValue="Em andamento"/>
+                                    <f:selectItem itemLabel="Saiu para entrega" itemValue="Saiu para entrega"/>
+                                    <f:selectItem itemLabel="Entregue" itemValue="Entregue"/>
+                                </h:selectOneMenu>
+                                <h:commandButton value="Nova" action="#{pedido.lancarAtualizacao(p)}"></h:commandButton>
+                            </h:panelGrid>
+
+                        </h:form>
+                    </p:column>
+                </p:dataTable>
+            </p:panel>
+        </c:if>
+
+    </ui:define>
+</ui:composition>

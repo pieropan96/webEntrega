@@ -1,0 +1,50 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./template/template.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:h="http://xmlns.jcp.org/jsf/html">
+
+    <ui:define name="left">
+        <h:form>
+            <li style="list-style: none;"><h:commandLink style="color: white;font-family: arial;" action="home">VOLTAR</h:commandLink></li> 
+        </h:form>
+    </ui:define>
+    <ui:define name="content">
+        <h:form>
+            <p:panel id="panel" header="Cadastrar Cidade" style="margin-bottom:10px;">
+                <h:panelGrid columns="2" cellpadding="5">
+                    <h:outputLabel  value="Nome " /><br/>
+                    <p:inputText  value="#{cidade.nome}"  />
+                </h:panelGrid>
+                <h:panelGrid columns="2" cellpadding="5">
+                    <h:outputLabel  value="Preço " /><br/>
+                    <p:inputText  value="#{cidade.preco}"  />
+                </h:panelGrid>
+                <h:panelGrid columns="2" cellpadding="5">
+                    <h:outputLabel  value="Prazo " /><br/>
+                    <p:inputText  value="#{cidade.prazo}"  />
+                </h:panelGrid>
+                <h:commandButton value="Confirmar" class="center_content" action="#{cidade.cadastrar()}"/>
+            </p:panel>
+        </h:form> 
+        <p:dataTable var="p" value="#{cidade.cidades}">
+            <p:column headerText="Nome">
+                <h:outputText value="#{p.nome}" />
+            </p:column>
+            <p:column headerText="Preço">
+                <h:outputText value="#{p.preco}" />
+            </p:column>
+            <p:column headerText="PRAZO">
+                <h:outputText value="#{p.prazo}" />
+            </p:column>
+            <p:column headerText="Ações">
+                <h:form>
+                     <h:commandButton value="APAGAR" class="center_content" action="#{cidade.apagar(p)}"/>
+                </h:form>
+            </p:column>
+        </p:dataTable> 
+    </ui:define>
+
+
+</ui:composition>

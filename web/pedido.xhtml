@@ -1,0 +1,68 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./template/template.xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:pm="http://primefaces.org/mobile"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <ui:define name="left">
+        <h:form>
+            <ul>
+                <c:if test="#{login.clienteLogado != null}">
+                    <li style="list-style: none;"><h:commandLink style="color: white;font-family: arial;" action="pedido">NOVO</h:commandLink></li>
+                </c:if>
+                <li style="list-style: none;"><h:commandLink style="color: white;font-family: arial;" action="listapedido">CONSULTAR</h:commandLink></li>
+                <li style="list-style: none;"><h:commandLink style="color: white;font-family: arial;" action="home">VOLTAR</h:commandLink></li>
+            </ul>
+        </h:form>
+    </ui:define>
+
+    <ui:define name="content">
+        <c:if test="#{login.clienteLogado != null}">
+            <h:form>
+                <p:panel id="panel" header="Calcular" style="margin-bottom:10px;">
+                    <h:panelGrid columns="2" cellpadding="5">
+                        <h:outputLabel  value="Cidade" /><br/>
+                        <h:selectOneMenu value="#{pedido.idCidade}" required="true">
+                            <f:selectItems value="#{pedido.cidade}" var="c" itemLabel="#{c.nome}" itemValue="#{c.idCidade}"/>
+                        </h:selectOneMenu>
+                    </h:panelGrid>
+                    <h:panelGrid columns="2" cellpadding="5">
+                        <h:outputLabel  value="Tipo" /><br/>
+                        <h:selectOneMenu value="${pedido.idTipo}" required="true">
+                            <f:selectItems value="#{pedido.tipos}" var="t" itemLabel="#{t.nome}" itemValue="#{t.idTipo}"/>
+                        </h:selectOneMenu><br/>
+                        <h:commandButton value="Calcular" class="center_content" action="#{pedido.calcular()}"/>
+                        <h:column></h:column><h:outputLabel  value="#{pedido.mensagem}" /><br/>
+                    </h:panelGrid>
+                </p:panel>
+            </h:form>
+            <h:form>
+                <p:panel id="panel" header="Efetuar Pedido" style="margin-bottom:10px;">
+                    <h:panelGrid columns="2" cellpadding="5">
+                        <h:outputLabel  value="Rua " /><br/>
+                        <p:inputText  value="#{pedido.rua}"  />
+                        <p:inputText  type="hidden" value="#{pedido.idCidade}"  />
+                        <p:inputText  type="hidden" value="#{pedido.idTipo}"  />
+                    </h:panelGrid>
+                    <h:panelGrid columns="2" cellpadding="5">
+                        <h:outputLabel  value="Número " /><br/>
+                        <p:inputText  value="#{pedido.numero}"  />
+                    </h:panelGrid>
+                    <h:panelGrid columns="2" cellpadding="5">
+                        <h:outputLabel  value="Bairro " /><br/>
+                        <p:inputText  value="#{pedido.bairro}"  />
+                    </h:panelGrid>
+                    <h:panelGrid columns="2" cellpadding="5">
+                        <h:outputLabel  value="Cep " /><br/>
+                        <p:inputText  value="#{pedido.cep}"  />
+                    </h:panelGrid>  
+                    <h:commandButton value="Confirmar" class="center_content" action="#{pedido.entrega()}"/>
+                </p:panel>
+            </h:form>
+        </c:if>
+    </ui:define>
+</ui:composition>
